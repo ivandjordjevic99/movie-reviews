@@ -26,11 +26,6 @@ module.exports = {
         allowNull: false,
         references: { model: 'Movies', key: 'id' }
       },
-      time: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW
-      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE

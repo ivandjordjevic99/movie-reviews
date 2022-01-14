@@ -9,10 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate( {Movies, Users}) {
       // define association here
-      this.belongsTo(Movies, {foreignKey: 'director_id', as: 'director'});
-      this.belongsTo(Users, {foreignKey: 'director_id', as: 'director'});
+      this.belongsTo(Movies, {foreignKey: 'movie_id', as: 'movie'});
+      this.belongsTo(Users, {foreignKey: 'user_id', as: 'user'});
     }
   };
   Comments.init({
@@ -23,11 +23,6 @@ module.exports = (sequelize, DataTypes) => {
     stars: {
       type: DataTypes.INTEGER,
       allowNull: false
-    },
-    time: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW
     }
   }, {
     sequelize,
