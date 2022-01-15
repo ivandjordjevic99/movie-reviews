@@ -33,7 +33,8 @@ authentication_service.post('/register', (req, res) => {
     ).then( row => {
         const usr = {
             userId: row.id,
-            user: row.username
+            user: row.username,
+            role: usr.role
         };
         console.log(usr)
         const token = jwt.sign(usr, process.env.ACCESS_TOKEN_SECRET);
@@ -51,7 +52,8 @@ authentication_service.post('/login', (req, res) => {
             if (bcrypt.compareSync(req.body.password, usr.password)) {
                 const obj = {
                     userId: usr.id,
-                    user: usr.name
+                    username: usr.username,
+                    role: usr.role
                 };
 
                 const token = jwt.sign(obj, process.env.ACCESS_TOKEN_SECRET);
@@ -64,4 +66,6 @@ authentication_service.post('/login', (req, res) => {
         .catch( err => res.status(500).json(err) );
 });
 
-authentication_service.listen(8081);
+authentication_service.listen({ port: 8081 }, async () => {
+    await sequelize.authenticate();
+});
