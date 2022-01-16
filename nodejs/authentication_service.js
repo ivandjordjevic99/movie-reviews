@@ -1,20 +1,24 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const cors = require('cors');
+const path = require('path');
+
 const { sequelize, Users } = require('./models');
 require('dotenv').config();
 
 const authentication_service = express()
 
-const corsOptions = {
-    origin: 'http://127.0.0.1:8080',
-    optionsSuccessStatus: 200
-};
 
 authentication_service.use(express.json())
 authentication_service.use(express.urlencoded({extended: true}))
+
+const cors = require('cors');
+const corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200
+};
 authentication_service.use(cors(corsOptions))
+
 
 
 authentication_service.post('/register', (req, res) => {
@@ -65,6 +69,7 @@ authentication_service.post('/login', (req, res) => {
         })
         .catch( err => res.status(500).json(err) );
 });
+authentication_service.use(express.static(path.join(__dirname, 'static')));
 
 authentication_service.listen({ port: 8081 }, async () => {
     await sequelize.authenticate();
