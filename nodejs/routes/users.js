@@ -3,6 +3,16 @@ const { sequelize, Users } = require('../models');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
+const Joi = require('joi')
+
+const sema = Joi.object().keys({
+    name: Joi.string().alphanum().required(),
+    surname: Joi.string().alphanum().required(),
+    email: Joi.string().email().required(),
+    username: Joi.string().alphanum().required(),
+    password: Joi.string().alphanum().required(),
+    role: Joi.string().alphanum().required()
+})
 
 const route = express.Router();
 
@@ -54,44 +64,58 @@ route.get('/:id', (req, res) => {
 route.post('', (req, res) => {
     if(!['ADMIN'].includes(req.user.role))
         return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
-    Users.create({
-        name: req.body.name,
-        surname: req.body.surname,
-        username: req.body.username,
-        password: bcrypt.hashSync(req.body.password, 10),
-        email: req.body.email,
-        role: req.body.role
-    } )
-        .then( row => {
-            res.json(row)
-        } )
-        .catch( err => {
-            res.status(500).json(err)
-        } );
-});
-
-route.put('/:id', (req, res) => {
-    if(!['ADMIN'].includes(req.user.role))
-        return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
-    Users.findOne({where: {id: req.params.id}})
-        .then( user => {
-            user.name = req.body.name
-            user.surname = req.body.surname
-            user.username = req.body.username
-            user.password = req.body.password
-            user.email = req.body.email
-            user.role = req.body.role
-            user.save()
-                .then(row => {
+    Joi.validate(req.body, sema, (err, result) => {
+        if(err){
+            res.status(400).send(err.details)
+        }else{
+            Users.create({
+                name: req.body.name,
+                surname: req.body.surname,
+                username: req.body.username,
+                password: bcrypt.hashSync(req.body.password, 10),
+                email: req.body.email,
+                role: req.body.role
+            } )
+                .then( row => {
                     res.json(row)
                 } )
                 .catch( err => {
                     res.status(500).json(err)
                 } );
-        } )
-        .catch( err => {
-            res.status(500).json(err)
-        } );
+        }
+    })
+
+});
+
+route.put('/:id', (req, res) => {
+    if(!['ADMIN'].includes(req.user.role))
+        return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
+    Joi.validate(req.body, sema, (err, result) => {
+        if(err){
+            res.status(400).send(err.details)
+        }else{
+            Users.findOne({where: {id: req.params.id}})
+                .then( user => {
+                    user.name = req.body.name
+                    user.surname = req.body.surname
+                    user.username = req.body.username
+                    user.password = req.body.password
+                    user.email = req.body.email
+                    user.role = req.body.role
+                    user.save()
+                        .then(row => {
+                            res.json(row)
+                        } )
+                        .catch( err => {
+                            res.status(500).json(err)
+                        } );
+                } )
+                .catch( err => {
+                    res.status(500).json(err)
+                } );
+        }
+    })
+
 });
 
 route.delete('/:id', (req, res) => {

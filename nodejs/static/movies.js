@@ -51,7 +51,8 @@ function init() {
             },
             body: JSON.stringify(body)
         }).then( res => res.json() )
-            .then(element => {
+            .then(el => {
+                alert(JSON.stringify(el[0]))
                 document.location.reload();
             });
     });
@@ -102,7 +103,7 @@ function init() {
                 if(Object.keys(el).length === 0 && el.constructor === Object)
                     alert("Error")
                 else{
-                    alert("Updated")
+                    alert(JSON.stringify(el[0]))
                     document.location.reload();
                 }
             });
