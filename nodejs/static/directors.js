@@ -2,14 +2,14 @@ function init() {
 
     const cookies = document.cookie.split('=');
     const token = cookies[cookies.length - 1];
-    fetch('http://127.0.0.1:8080/api/movies', {
+    fetch('http://127.0.0.1:8080/api/directors', {
         headers: {
             'Authorization': `Bearer ${token}`
         }
     })
         .then( res => res.json() )
         .then( data => {
-            const list = document.getElementById('movieList');
+            const list = document.getElementById('directorList');
 
             data.forEach( element => {
                 list.innerHTML += `<li>ID: ${element.id}, Name: ${element.name}</li>`;
@@ -20,7 +20,7 @@ function init() {
         e.preventDefault();
 
         const id = document.getElementById('deleteId').value
-        const url = 'http://127.0.0.1:8080/api/movies/' + id
+        const url = 'http://127.0.0.1:8080/api/directors/' + id
 
         fetch(url, {
             method: 'DELETE',
@@ -39,11 +39,9 @@ function init() {
 
         const body = {
             name: document.getElementById('name').value,
-            year: document.getElementById('year').value,
-            director_id: document.getElementById('director_id').value,
-            synopsis: document.getElementById('synopsis').value
+            country: document.getElementById('country').value
         }
-        fetch('http://127.0.0.1:8080/api/movies', {
+        fetch('http://127.0.0.1:8080/api/directors', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,7 +58,7 @@ function init() {
         e.preventDefault();
 
         const id = document.getElementById('loadId').value
-        const url = 'http://127.0.0.1:8080/api/movies/' + id
+        const url = 'http://127.0.0.1:8080/api/directors/' + id
         console.log(url)
         fetch(url, {
             method: 'GET',
@@ -71,9 +69,7 @@ function init() {
         }).then( res => res.json() )
             .then(element => {
                 document.getElementById('update_name').value = element.name
-                document.getElementById('update_year').value = element.year
-                document.getElementById('update_director_id').value = element.director_id
-                document.getElementById('update_synopsis').value = element.synopsis
+                document.getElementById('update_country').value = element.country
             });
     });
 
@@ -82,13 +78,11 @@ function init() {
 
         const body = {
             name: document.getElementById('update_name').value,
-            year: document.getElementById('update_year').value,
-            director_id: document.getElementById('update_director_id').value,
-            synopsis: document.getElementById('update_synopsis').value
+            country: document.getElementById('update_country').value,
         }
 
         const id = document.getElementById('loadId').value
-        const url = 'http://127.0.0.1:8080/api/movies/' + id
+        const url = 'http://127.0.0.1:8080/api/directors/' + id
         console.log(url)
         fetch(url, {
             method: 'PUT',
@@ -105,6 +99,7 @@ function init() {
                     alert("Updated")
                     document.location.reload();
                 }
+
             });
     });
 }

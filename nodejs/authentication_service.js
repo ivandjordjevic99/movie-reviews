@@ -14,8 +14,9 @@ authentication_service.use(express.urlencoded({extended: true}))
 
 const cors = require('cors');
 const corsOptions = {
-    origin: '*',
-    optionsSuccessStatus: 200
+    origin: 'http://localhost:8082',
+    optionsSuccessStatus: 200,
+    credentials: true
 };
 authentication_service.use(cors(corsOptions))
 
@@ -61,7 +62,7 @@ authentication_service.post('/login', (req, res) => {
                 };
 
                 const token = jwt.sign(obj, process.env.ACCESS_TOKEN_SECRET);
-
+                console.log(token)
                 res.json({ token: token });
             } else {
                 res.status(400).json({ msg: "Invalid credentials"});

@@ -13,14 +13,72 @@
         <h1>Movies</h1>
     </div>
     <div class="container">
-        <ul id="movieList"></ul>
+        <p>Add new movie: </p>
+        <form>
+            <div class="mb-3">
+                <label for="name" class="form-label">Name:</label>
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+            <div class="mb-3">
+                <label for="year" class="form-label">Year:</label>
+                <input type="text" class="form-control" id="year" name="year">
+            </div>
+            <div class="mb-3">
+                <label for="director_id" class="form-label">Director id:</label>
+                <input type="text" class="form-control" id="director_id" name="director_id">
+            </div>
+            <div class="mb-3">
+                <label for="synopsis" class="form-label">Synopsis:</label>
+                <input type="text" class="form-control" id="synopsis" name="synopsis">
+            </div>
+        </form>
+        <button type="submit" id="addBtn" class="btn btn-primary">Add</button>
     </div>
+    <br/>
+    <div class="container">
+        <p>Load and update movie with id: </p>
+        <form>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="loadId">
+            </div>
+        </form>
+        <button type="submit" id="loadBtn" class="btn btn-primary">Load</button>
+    </div>
+    <div class="container">
+        <form>
+            <div class="mb-3">
+                <label for="update_name" class="form-label">Name:</label>
+                <input type="text" class="form-control" id="update_name" name="name">
+            </div>
+            <div class="mb-3">
+                <label for="update_year" class="form-label">Year:</label>
+                <input type="text" class="form-control" id="update_year" name="year">
+            </div>
+            <div class="mb-3">
+                <label for="update_director_id" class="form-label">Director id:</label>
+                <input type="text" class="form-control" id="update_director_id" name="director_id">
+            </div>
+            <div class="mb-3">
+                <label for="update_synopsis" class="form-label">Synopsis:</label>
+                <input type="text" class="form-control" id="update_synopsis" name="synopsis">
+            </div>
+        </form>
+        <button type="submit" id="updateBtn" class="btn btn-primary">Update</button>
+    </div>
+    <br/>
     <div class="container">
         <p>Delete movie with id: </p>
         <form>
-            <input type="text" class="form-control" id="deleteId">
+            <div class="mb-3">
+                <input type="text" class="form-control" id="deleteId">
+            </div>
         </form>
         <button type="submit" id="deleteBtn" class="btn btn-primary">Delete</button>
+    </div>
+    <br/>
+    <div class="container">
+        <p>Movie list: </p>
+        <ul id="movieList"></ul>
     </div>
 </body>
 </html>

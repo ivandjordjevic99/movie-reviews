@@ -2,17 +2,17 @@ function init() {
 
     const cookies = document.cookie.split('=');
     const token = cookies[cookies.length - 1];
-    fetch('http://127.0.0.1:8080/api/movies', {
+    fetch('http://127.0.0.1:8080/api/comments', {
         headers: {
             'Authorization': `Bearer ${token}`
         }
     })
         .then( res => res.json() )
         .then( data => {
-            const list = document.getElementById('movieList');
+            const list = document.getElementById('commentList');
 
             data.forEach( element => {
-                list.innerHTML += `<li>ID: ${element.id}, Name: ${element.name}</li>`;
+                list.innerHTML += `<li>ID: ${element.id}, User id: ${element.user_id}, Movie id: ${element.movie_id}, Stars: ${element.stars}, content: ${element.content}</li>`;
             });
         });
 
@@ -20,7 +20,7 @@ function init() {
         e.preventDefault();
 
         const id = document.getElementById('deleteId').value
-        const url = 'http://127.0.0.1:8080/api/movies/' + id
+        const url = 'http://127.0.0.1:8080/api/comments/' + id
 
         fetch(url, {
             method: 'DELETE',
@@ -38,12 +38,12 @@ function init() {
         e.preventDefault();
 
         const body = {
-            name: document.getElementById('name').value,
-            year: document.getElementById('year').value,
-            director_id: document.getElementById('director_id').value,
-            synopsis: document.getElementById('synopsis').value
+            content: document.getElementById('content').value,
+            stars: document.getElementById('stars').value,
+            user_id: document.getElementById('user_id').value,
+            movie_id: document.getElementById('movie_id').value
         }
-        fetch('http://127.0.0.1:8080/api/movies', {
+        fetch('http://127.0.0.1:8080/api/comments', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,7 +60,8 @@ function init() {
         e.preventDefault();
 
         const id = document.getElementById('loadId').value
-        const url = 'http://127.0.0.1:8080/api/movies/' + id
+
+        const url = 'http://127.0.0.1:8080/api/comments/' + id
         console.log(url)
         fetch(url, {
             method: 'GET',
@@ -70,10 +71,10 @@ function init() {
             }
         }).then( res => res.json() )
             .then(element => {
-                document.getElementById('update_name').value = element.name
-                document.getElementById('update_year').value = element.year
-                document.getElementById('update_director_id').value = element.director_id
-                document.getElementById('update_synopsis').value = element.synopsis
+                document.getElementById('update_content').value = element.content
+                document.getElementById('update_stars').value = element.stars
+                document.getElementById('update_user_id').value = element.user_id
+                document.getElementById('update_movie_id').value = element.movie_id
             });
     });
 
@@ -81,14 +82,14 @@ function init() {
         e.preventDefault();
 
         const body = {
-            name: document.getElementById('update_name').value,
-            year: document.getElementById('update_year').value,
-            director_id: document.getElementById('update_director_id').value,
-            synopsis: document.getElementById('update_synopsis').value
+            content: document.getElementById('update_content').value,
+            stars: document.getElementById('update_stars').value,
+            user_id: document.getElementById('update_user_id').value,
+            movie_id: document.getElementById('update_movie_id').value
         }
 
         const id = document.getElementById('loadId').value
-        const url = 'http://127.0.0.1:8080/api/movies/' + id
+        const url = 'http://127.0.0.1:8080/api/comments/' + id
         console.log(url)
         fetch(url, {
             method: 'PUT',
@@ -105,6 +106,7 @@ function init() {
                     alert("Updated")
                     document.location.reload();
                 }
+
             });
     });
 }
