@@ -32,11 +32,7 @@ function authToken(req, res, next) {
     });
 }
 
-route.use(authToken);
-
 route.get('', (req, res) => {
-    if(!['ADMIN', 'MODERATOR'].includes(req.user.role))
-        return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
     Movies.findAll()
         .then( rows => {
             res.json(rows)
