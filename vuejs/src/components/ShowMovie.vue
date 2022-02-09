@@ -17,9 +17,6 @@
         name: "ShowMovie",
         props: {
             movie: Object
-        },
-        methods: {
-          ...mapActions(['fetchDirectorById']),
         }
     }
     

@@ -5,8 +5,8 @@ require('dotenv').config();
 const Joi = require('joi')
 
 const sema = Joi.object().keys({
-    name: Joi.string().alphanum().required(),
-    country: Joi.string().alphanum().required()
+    name: Joi.string().required(),
+    country: Joi.string().required()
 })
 
 const route = express.Router();
@@ -40,7 +40,7 @@ route.get('', (req, res) => {
         } );
 });
 
-route.get('/:id', (req, res) => {
+route.get('/:id', authToken, (req, res) => {
     if(!['ADMIN', 'MODERATOR'].includes(req.user.role))
         return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
     Directors.findOne( {where: {id: req.params.id}})
@@ -52,7 +52,7 @@ route.get('/:id', (req, res) => {
         } );
 });
 
-route.post('', (req, res) => {
+route.post('', authToken, (req, res) => {
     if(!['ADMIN', 'MODERATOR'].includes(req.user.role))
         return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
     Joi.validate(req.body, sema, (err, result) => {
@@ -74,7 +74,7 @@ route.post('', (req, res) => {
 
 });
 
-route.put('/:id', (req, res) => {
+route.put('/:id', authToken, (req, res) => {
     if(!['ADMIN', 'MODERATOR'].includes(req.user.role))
         return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
     Joi.validate(req.body, sema, (err, result) => {
@@ -101,7 +101,7 @@ route.put('/:id', (req, res) => {
 
 });
 
-route.delete('/:id', (req, res) => {
+route.delete('/:id', authToken, (req, res) => {
     if(!['ADMIN', 'MODERATOR'].includes(req.user.role))
         return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
     Directors.findOne({where: {id: req.params.id}})

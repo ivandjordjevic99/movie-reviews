@@ -14,7 +14,7 @@ authentication_service.use(express.urlencoded({extended: true}))
 
 const cors = require('cors');
 const corsOptions = {
-    origin: 'http://localhost:8082',
+    origin: ['http://localhost:8082', 'http://localhost:8083'],
     optionsSuccessStatus: 200,
     credentials: true
 };
@@ -38,8 +38,8 @@ authentication_service.post('/register', (req, res) => {
     ).then( row => {
         const usr = {
             userId: row.id,
-            user: row.username,
-            role: usr.role
+            username: row.username,
+            role: row.role
         };
         console.log(usr)
         const token = jwt.sign(usr, process.env.ACCESS_TOKEN_SECRET);

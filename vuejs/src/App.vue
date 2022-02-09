@@ -4,10 +4,43 @@
       <router-link to="/">Movies</router-link> |
       <router-link to="/directors">Directors</router-link> |
       <router-link to="/about">About</router-link>
+      <b-button v-if="logged" variant="dark" @click="log_out">Log out</b-button>
+      <div v-else>
+        <router-link to="/login">Login</router-link> |
+        <router-link to="/register">Register</router-link>
+      </div>
     </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+import {mapActions, mapState} from "vuex";
+
+  export default {
+    data() {
+      return {
+        logged: false
+      }
+    },
+    computed: {
+      ...mapState(['token'])
+    },
+    mounted: function() {
+      if(localStorage.getItem('token') === ''){
+        this.logged = false
+      }else{
+        this.logged = true
+      }
+    },
+    methods: {
+      ...mapActions(['logOut']),
+      log_out: function () {
+        this.logOut();
+      }
+    },
+  }
+</script>
 
 <style>
 #app {

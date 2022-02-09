@@ -3,6 +3,9 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Movie from "../views/Movie.vue";
 import Directors from "../views/Directors.vue";
+import Comments from "../views/Comments";
+import Register from "../views/Register";
+import Login from "../views/Login";
 
 Vue.use(VueRouter)
 
@@ -21,6 +24,21 @@ const routes = [
     path: '/directors',
     name: 'Directors',
     component: Directors
+  },
+  {
+    path: '/comments/:id',
+    name: 'Comments',
+    component: Comments
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
   },
   {
     path: '/about',

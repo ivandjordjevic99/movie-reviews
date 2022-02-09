@@ -5,9 +5,9 @@ require('dotenv').config();
 const Joi = require('joi')
 
 const sema = Joi.object().keys({
-    name: Joi.string().alphanum().required(),
+    name: Joi.string().required(),
     year: Joi.number().required(),
-    synopsis: Joi.string().alphanum().required(),
+    synopsis: Joi.string().required(),
     director_id: Joi.number().required()
 })
 
@@ -42,7 +42,7 @@ route.get('', (req, res) => {
         } );
 });
 
-route.get('/:id', (req, res) => {
+route.get('/:id', authToken,(req, res) => {
     if(!['ADMIN', 'MODERATOR'].includes(req.user.role))
         return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
     Movies.findOne( {where: {id: req.params.id}})
@@ -54,7 +54,7 @@ route.get('/:id', (req, res) => {
         } );
 });
 
-route.post('', (req, res) => {
+route.post('', authToken,(req, res) => {
     if(!['ADMIN', 'MODERATOR'].includes(req.user.role))
         return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
     Joi.validate(req.body, sema, (err, result) => {
@@ -77,7 +77,7 @@ route.post('', (req, res) => {
     })
 });
 
-route.put('/:id', (req, res) => {
+route.put('/:id', authToken,(req, res) => {
     if(!['ADMIN', 'MODERATOR'].includes(req.user.role))
         return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
     Joi.validate(req.body, sema, (err, result) => {
@@ -105,7 +105,7 @@ route.put('/:id', (req, res) => {
 
 });
 
-route.delete('/:id', (req, res) => {
+route.delete('/:id', authToken,(req, res) => {
     if(!['ADMIN', 'MODERATOR'].includes(req.user.role))
         return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
     Movies.findOne({where: {id: req.params.id}})

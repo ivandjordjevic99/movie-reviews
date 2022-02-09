@@ -1,7 +1,7 @@
 <template>
   <div class="home" align = "center">
     <div>
-      <h1>{{movies[0].name}} ({{movies[0].year}})</h1>
+      <h1>{{movie.name}} ({{movie.year}})</h1>
       
       <div v-if="newcomm">
         <NewComment/>
@@ -30,22 +30,29 @@
         NewComment
       },
       data() {
-            return {
-                newcomm: false
-            }
-        },
-      computed: {
-        ...mapState(['movies'])
+          return {
+              newcomm: false
+          }
+      },
+      mounted: function() {
+        this.fetchMovies();
       },
       methods: {
-        ...mapActions(['load_movie']),
+        ...mapActions(['fetchMovies']),
         toggleNewComm: function () {
                 this.newcomm = !this.newcomm
             }
       },
-      mounted: function() {
+      computed: {
+        ...mapState(['movies']),
 
-            this.load_movie(this.$route.params.id);
+        movie: function () {
+          for (let i = 0; i < this.movies.length; i++) {
+            if (this.movies[i].id === parseInt(this.$route.params.id)) {
+              return this.movies[i];
+            }
+          }
+        },
       }
   }
 </script>
