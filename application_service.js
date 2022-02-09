@@ -54,8 +54,7 @@ application_service.use('/admin/users', users);
 application_service.use('/admin/comments', comments);
 application_service.use('/admin/directors', directors);
 
-application_service.get('' +
-    '', authToken, (req, res) => {
+application_service.get('' , authToken, (req, res) => {
     res.sendFile('firstpage.html', { root: './static' });
 });
 
