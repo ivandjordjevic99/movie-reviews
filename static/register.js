@@ -19,7 +19,7 @@ function init() {
             .then( res => res.json() )
             .then( el => {
                 document.cookie = `token=${el.token};SameSite=Lax`;
-                window.location.href = 'firstpage.html';
+                window.location.assign("https://movie-reviews-app-service.herokuapp.com/admin");
             });
     });
 }
