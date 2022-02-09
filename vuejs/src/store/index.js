@@ -21,6 +21,18 @@ export default new Vuex.Store({
     addComments(state, rows) {
       state.comments = rows;
     },
+    addComment: function (state, comment) {
+      state.comments.push(comment);
+    },
+    updateComment: function (state, payload) {
+      for (let i = 0; i < state.comments.length; i++) {
+        if (state.comments[i].id === parseInt(payload.id)) {
+          state.comments[i].stars = parseInt(payload.stars);
+          state.comments[i].content = payload.content;
+          break;
+        }
+      }
+    },
     setToken(state, t) {
       state.token = t;
       localStorage.setItem('token', t);
@@ -31,8 +43,15 @@ export default new Vuex.Store({
       state.token = '';
       localStorage.setItem('token', '');
       router.go();
-    }
-
+    },
+    removeComment: function (state, id) {
+      for (let i = 0; i < state.comments.length; i++) {
+        if (state.comments[i].id === id) {
+          state.comments.splice(i, 1);
+          break;
+        }
+      }
+    },
   },
   actions: {
     fetchMovies({ commit }) {
@@ -50,6 +69,47 @@ export default new Vuex.Store({
       fetch(url)
           .then( obj => obj.json() )
           .then( res => commit('addComments', res));
+    },
+    newComment({ commit }, obj) {
+      const token = 'Bearer ' + localStorage.getItem('token');
+      fetch('http://localhost:8080/api/comments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: obj
+      })
+          .then( obj => obj.json() )
+          .then( res => commit('addComment', res));
+    },
+    deleteComment({ commit }, id) {
+      const token = 'Bearer ' + localStorage.getItem('token');
+      const url = 'http://localhost:8080/api/comments/' + id
+      console.log(url)
+      fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        }
+      })
+          .then( obj => obj.json() )
+          .then( res => commit('removeComment', res.id));
+    },
+    editComment({ commit }, arg) {
+      const token = 'Bearer ' + localStorage.getItem('token');
+      const url = 'http://localhost:8080/api/comments/' + arg.commentId
+      fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: arg.comm
+      })
+          .then( obj => obj.json() )
+          .then( res => commit('updateComment', res));
     },
     register({ commit }, obj) {
       fetch('http://localhost:8081/register', {

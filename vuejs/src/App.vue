@@ -23,9 +23,6 @@ import {mapActions, mapState} from "vuex";
         logged: false
       }
     },
-    computed: {
-      ...mapState(['token'])
-    },
     mounted: function() {
       if(localStorage.getItem('token') === ''){
         this.logged = false

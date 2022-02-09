@@ -3,7 +3,7 @@
         <b-form>
             <b-row class="mt-2">
                 <b-col sm="2" offset="2">
-                    <b-input v-model="newUsername" class="mb-2 mr-sm-2 mb-sm-0" placeholder="UserName"></b-input>
+                    <b-input v-model="newStars" class="mb-2 mr-sm-2 mb-sm-0" placeholder="Stars"></b-input>
                 </b-col>
                 <b-col sm="7" offset="2">
                     <b-form-textarea v-model="newContent" placeholder="Comment"></b-form-textarea>
@@ -20,25 +20,32 @@
     // @ is an alias to /src
   import { mapState, mapActions } from 'vuex';
   import Joi from 'joi';
+  import VueJwtDecode from "vue-jwt-decode";
   
   const sema2 = Joi.object().keys({
-    username: Joi.string().trim().min(4).max(13).token().required(),
-    content: Joi.string().min(5).max(700).required()
+    stars: Joi.number().min(1).max(10).required(),
+    content: Joi.string().min(5).max(700).required(),
+    movie_id: Joi.number().required(),
+    user_id: Joi.number().required(),
   });
   export default {
       name: "newComment",
       props: {
-            username: {
+            user_id: {
                 type: String,
                 default: ''
+            },
+            movie_id: {
+              type: String,
+              default: ''
             },
             content: {
                 type: String,
                 default: ''
             },
-            movie_id: {
+            stars: {
                 type: Number,
-                default: 0
+                default: 1
             }
       },
       
@@ -48,25 +55,28 @@
       },
       data() {
             return {
-                newUsername: '',
+                newStars: 0,
                 newContent: '',
             }
       },
       methods: {
-        ...mapActions(['load_comments', 'new_comment']),
+        ...mapActions(['newComment']),
         addNew: function() {
                 let id = parseInt(this.$route.params.id);
-                let { error } = sema2.validate({username: this.newUsername, content: this.newContent});
-                const comm = JSON.stringify({username: this.newUsername, content: this.newContent, movie_id: id});
-
+                let decoded = VueJwtDecode.decode(localStorage.getItem('token'));
+                const decoded_user_id = decoded.userId
+                this.newStars = parseInt(this.newStars)
+                let { error } = sema2.validate({stars: this.newStars, content: this.newContent, movie_id: id, user_id: decoded_user_id});
+                const comm = JSON.stringify({stars: this.newStars, content: this.newContent, movie_id: id, user_id: decoded_user_id});
+                console.log(comm)
                 if(error){
                   alert(error)
                 }
                 else{ 
-                  this.new_comment(comm);
+                  this.newComment(comm);
 
 
-                  this.newUsername = '';
+                  this.newStars = '';
                   this.newContent = '';
                 }
             }

@@ -70,7 +70,6 @@ route.get('/:id', (req, res) => {
 route.post('', authToken, (req, res) => {
     if(!['ADMIN', 'MODERATOR', 'USER'].includes(req.user.role))
         return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
-
     Joi.validate(req.body, sema, (err, result) => {
         if(err){
             res.status(400).send(err.details)
@@ -92,10 +91,9 @@ route.post('', authToken, (req, res) => {
 
 });
 
-route.put('/:id', (req, res) => {
+route.put('/:id', authToken, (req, res) => {
     if(!['ADMIN', 'MODERATOR', 'USER'].includes(req.user.role))
         return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
-
     Joi.validate(req.body, sema, (err, result) => {
         if(err){
             res.status(400).send(err.details)
@@ -122,7 +120,7 @@ route.put('/:id', (req, res) => {
 
 });
 
-route.delete('/:id', (req, res) => {
+route.delete('/:id', authToken, (req, res) => {
     if(!['ADMIN', 'MODERATOR', 'USER'].includes(req.user.role))
         return res.status(403).json({ msg: "User with provided role is not authorized for this route" });
     Comments.findOne({where: {id: req.params.id}})
