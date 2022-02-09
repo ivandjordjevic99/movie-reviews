@@ -22,7 +22,12 @@ export default new Vuex.Store({
       state.comments = rows;
     },
     addComment: function (state, comment) {
-      state.comments.push(comment);
+      if(state.comments.length !== 0)
+        return;
+      if(comment.movie_id === state.comments[0].movie_id){
+        state.comments.push(comment);
+      }
+
     },
     updateComment: function (state, payload) {
       for (let i = 0; i < state.comments.length; i++) {
@@ -55,24 +60,24 @@ export default new Vuex.Store({
   },
   actions: {
     fetchMovies({ commit }) {
-      fetch('http://localhost:8080/api/movies')
+      fetch('https://movie-reviews-rest-service.herokuapp.com/api/movies')
           .then( obj => obj.json() )
           .then( res => commit('addMovies', res) );
     },
     fetchDirectors({ commit }) {
-      fetch('http://localhost:8080/api/directors')
+      fetch('https://movie-reviews-rest-service.herokuapp.com/api/directors')
           .then( obj => obj.json() )
           .then( res => commit('addDirectors', res) );
     },
     fetchComments({ commit }, id) {
-      const url = 'http://localhost:8080/api/comments/movie/' + id;
+      const url = 'https://movie-reviews-rest-service.herokuapp.com/api/comments/movie/' + id;
       fetch(url)
           .then( obj => obj.json() )
           .then( res => commit('addComments', res));
     },
     newComment({ commit }, obj) {
       const token = 'Bearer ' + localStorage.getItem('token');
-      fetch('http://localhost:8080/api/comments', {
+      fetch('https://movie-reviews-rest-service.herokuapp.com/api/comments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +90,7 @@ export default new Vuex.Store({
     },
     deleteComment({ commit }, id) {
       const token = 'Bearer ' + localStorage.getItem('token');
-      const url = 'http://localhost:8080/api/comments/' + id
+      const url = 'https://movie-reviews-rest-service.herokuapp.com/api/comments/' + id
       console.log(url)
       fetch(url, {
         method: 'DELETE',
@@ -99,7 +104,7 @@ export default new Vuex.Store({
     },
     editComment({ commit }, arg) {
       const token = 'Bearer ' + localStorage.getItem('token');
-      const url = 'http://localhost:8080/api/comments/' + arg.commentId
+      const url = 'https://movie-reviews-rest-service.herokuapp.com/api/comments/' + arg.commentId
       fetch(url, {
         method: 'PUT',
         headers: {
@@ -112,7 +117,7 @@ export default new Vuex.Store({
           .then( res => commit('updateComment', res));
     },
     register({ commit }, obj) {
-      fetch('http://localhost:8081/register', {
+      fetch('https://movie-reviews-auth-service.herokuapp.com/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)
@@ -123,7 +128,7 @@ export default new Vuex.Store({
       commit('removeToken')
     },
     login({ commit }, obj) {
-      fetch('http://localhost:8081/login', {
+      fetch('https://movie-reviews-auth-service.herokuapp.com/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj)

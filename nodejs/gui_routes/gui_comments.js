@@ -21,18 +21,18 @@ function authToken(req, res, next) {
     const token = cookies['token'];
     if (token == null) {
         console.log("TOKEN JE NULL")
-        return res.redirect(301, '/login');
+        return res.redirect(301, '/admin/login');
     }
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
 
         if (err){
             console.log(err)
-            return res.redirect(301, '/login');
+            return res.redirect(301, '/admin/login');
         }
         req.user = user;
 
         if(!['ADMIN', 'MODERATOR'].includes(user.role))
-            return res.redirect(301, '/login');
+            return res.redirect(301, '/admin/login');
 
         next();
     });

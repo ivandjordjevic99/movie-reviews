@@ -7,7 +7,7 @@ function init() {
             username: document.getElementById('username').value,
             password: document.getElementById('password').value
         };
-        fetch('http://localhost:8081/login', {
+        fetch('https://movie-reviews-auth-service.herokuapp.com/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)

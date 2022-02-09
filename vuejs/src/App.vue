@@ -35,7 +35,7 @@ import {mapActions, mapState} from "vuex";
       log_out: function () {
         this.logOut();
       }
-    },
+    }
   }
 </script>
 

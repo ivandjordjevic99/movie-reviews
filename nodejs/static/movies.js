@@ -2,7 +2,7 @@ function init() {
 
     const cookies = document.cookie.split('=');
     const token = cookies[cookies.length - 1];
-    fetch('http://127.0.0.1:8080/api/movies')
+    fetch('https://movie-reviews-rest-service.herokuapp.com/api/movies')
         .then( res => res.json() )
         .then( data => {
             const list = document.getElementById('movieList');
@@ -16,7 +16,7 @@ function init() {
         e.preventDefault();
 
         const id = document.getElementById('deleteId').value
-        const url = 'http://127.0.0.1:8080/api/movies/' + id
+        const url = 'https://movie-reviews-rest-service.herokuapp.com/api/movies/' + id
 
         fetch(url, {
             method: 'DELETE',
@@ -39,7 +39,7 @@ function init() {
             director_id: document.getElementById('director_id').value,
             synopsis: document.getElementById('synopsis').value
         }
-        fetch('http://127.0.0.1:8080/api/movies', {
+        fetch('https://movie-reviews-rest-service.herokuapp.com/api/movies', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ function init() {
         e.preventDefault();
 
         const id = document.getElementById('loadId').value
-        const url = 'http://127.0.0.1:8080/api/movies/' + id
+        const url = 'https://movie-reviews-rest-service.herokuapp.com/api/movies/' + id
         console.log(url)
         fetch(url, {
             method: 'GET',
@@ -85,7 +85,7 @@ function init() {
         }
 
         const id = document.getElementById('loadId').value
-        const url = 'http://127.0.0.1:8080/api/movies/' + id
+        const url = 'https://movie-reviews-rest-service.herokuapp.com/api/movies/' + id
         console.log(url)
         fetch(url, {
             method: 'PUT',

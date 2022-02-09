@@ -14,7 +14,7 @@ authentication_service.use(express.urlencoded({extended: true}))
 
 const cors = require('cors');
 const corsOptions = {
-    origin: ['http://localhost:8080', 'http://localhost:8082', 'http://localhost:8083'],
+    origin: '*',
     optionsSuccessStatus: 200,
     credentials: true
 };
@@ -72,6 +72,6 @@ authentication_service.post('/login', (req, res) => {
 });
 authentication_service.use(express.static(path.join(__dirname, 'static')));
 
-authentication_service.listen({ port: 8081 }, async () => {
+authentication_service.listen({ port: process.env.PORT || 8081 }, async () => {
     await sequelize.authenticate();
 });

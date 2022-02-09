@@ -72,9 +72,8 @@
                 if(error){
                   alert(error)
                 }
-                else{ 
+                else{
                   this.newComment(comm);
-
 
                   this.newStars = '';
                   this.newContent = '';

@@ -5,6 +5,7 @@ const users = require('./gui_routes/gui_users');
 const comments = require('./gui_routes/gui_comments');
 const directors = require('./gui_routes/gui_directors');
 const jwt = require('jsonwebtoken');
+const history = require('connect-history-api-fallback');
 require('dotenv').config();
 
 function getCookies(req) {
@@ -24,11 +25,11 @@ function getCookies(req) {
 function authToken(req, res, next) {
     const cookies = getCookies(req);
     const token = cookies['token'];
-    if (token == null) return res.redirect(301, '/login');
+    if (token == null) return res.redirect(301, '/admin/login');
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
 
-        if (err) return res.redirect(301, '/login');
+        if (err) return res.redirect(301, '/admin/login');
         req.user = user;
 
         next();
@@ -40,7 +41,7 @@ const application_service = express();
 
 const cors = require('cors');
 const corsOptions = {
-    origin: 'http://localhost:8080',
+    origin: '*',
     optionsSuccessStatus: 200
 };
 application_service.use(cors(corsOptions))
@@ -57,14 +58,22 @@ application_service.get('/admin', authToken, (req, res) => {
     res.sendFile('firstpage.html', { root: './static' });
 });
 
-application_service.get('/login', (req, res) => {
+application_service.get('/admin/login', (req, res) => {
     res.sendFile('login.html', { root: './static' });
 });
 
-application_service.get('/register', (req, res) => {
+application_service.get('/admin/register', (req, res) => {
     res.sendFile('register.html', { root: './static' });
 });
 
+const staticMdl = express.static(path.join(__dirname, 'dist'));
+
+application_service.use(staticMdl);
+
+application_service.use(history({ index: '/index.html' }));
+
+application_service.use(staticMdl);
+
 
 application_service.use(express.static(path.join(__dirname, 'static')));
-application_service.listen(8082);
+application_service.listen({port: process.env.PORT || 8082});
