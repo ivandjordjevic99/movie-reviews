@@ -6,12 +6,12 @@ require('dotenv').config();
 const Joi = require('joi')
 
 const sema = Joi.object().keys({
-    name: Joi.string().alphanum().required(),
-    surname: Joi.string().alphanum().required(),
+    name: Joi.string().required(),
+    surname: Joi.string().required(),
     email: Joi.string().email().required(),
-    username: Joi.string().alphanum().required(),
-    password: Joi.string().alphanum().required(),
-    role: Joi.string().alphanum().required()
+    username: Joi.string().required(),
+    password: Joi.string().required(),
+    role: Joi.string().required()
 })
 
 const route = express.Router();
