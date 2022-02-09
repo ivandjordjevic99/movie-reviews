@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node rest_service.js && node authentication_service.js && node application_service.js"
+    "start": "node rest_service.js"
   },
   "author": "",
   "license": "ISC",
