@@ -19,7 +19,7 @@ function init() {
                 } else {
                     console.log(el.token)
                     document.cookie = `token=${el.token};SameSite=Lax`;
-                    window.location.href = '';
+                    window.location.assign("https://movie-reviews-app-service.herokuapp.com/admin")
                 }
             });
     });
